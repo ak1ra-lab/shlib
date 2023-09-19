@@ -17,12 +17,7 @@ Here's an example of how create and compress a custom set of functions.  Using `
 ```bash
 cat \
   license.sh \
-  is_command.sh \
-  uname.sh \
-  untar.sh \
-  mktmpdir.sh \
-  http_download.sh \
-  hash_sha256.sh \
+  $(ls *.sh | grep -vE 'license(_end)?\.sh|_test\.sh' | sort) \
   license_end.sh | \
   grep -v '^#' | grep -v ' #' | tr -s '\n'
 ```
