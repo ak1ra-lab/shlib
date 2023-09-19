@@ -17,7 +17,7 @@ Here's an example of how create and compress a custom set of functions.  Using `
 ```bash
 cat \
   license.sh \
-  $(ls *.sh | grep -vE 'license(_end)?\.sh|_test\.sh' | sort) \
+  $(ls *.sh | grep -vE 'assert\.sh|license(_end)?\.sh|_test\.sh' | sort) \
   license_end.sh | \
   grep -v '^#' | grep -v ' #' | tr -s '\n'
 ```
