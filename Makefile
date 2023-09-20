@@ -1,6 +1,6 @@
 
 test: ## run tests
-	/bin/sh *_test.sh
+	err=0; for t in *_test.sh; do /bin/sh $$t; e=$$?; if [ $$e -ne 0 ]; then echo "^ $$t"; err=$$e; fi; done; exit $$err
 
 lint: ./bin/shfmt ## run shellcheck and other lints
 	./scripts/lint.sh
@@ -22,3 +22,11 @@ help:
 	}' $(MAKEFILE_LIST)
 .DEFAULT_GOAL=help
 .PHONY=help
+
+shlib:
+	cat \
+		license.sh \
+		$$(ls *.sh | grep -vE 'assert\.sh|license(_end)?\.sh|_test\.sh' | sort) \
+		license_end.sh | \
+		grep -v '^#' | grep -v ' #' | tr -s '\n'
+.PHONY=shlib
