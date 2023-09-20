@@ -22,3 +22,11 @@ help:
 	}' $(MAKEFILE_LIST)
 .DEFAULT_GOAL=help
 .PHONY=help
+
+shlib:
+	cat \
+		license.sh \
+		$$(ls *.sh | grep -vE 'assert\.sh|license(_end)?\.sh|_test\.sh' | sort) \
+		license_end.sh | \
+		grep -v '^#' | grep -v ' #' | tr -s '\n'
+.PHONY=shlib
