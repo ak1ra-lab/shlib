@@ -24,7 +24,7 @@ help:
 .PHONY=help
 
 shlib:
-	cat \
+	@cat \
 		license.sh \
 		$$(ls *.sh | grep -vE 'assert\.sh|license(_end)?\.sh|_test\.sh' | sort) \
 		license_end.sh | \
