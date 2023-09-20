@@ -1,5 +1,6 @@
 . ./assert.sh
 . ./echoerr.sh
+. ./date_iso8601.sh
 . ./log.sh
 . ./uname_os.sh
 . ./uname_os_check.sh

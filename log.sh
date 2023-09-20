@@ -3,7 +3,7 @@
 #
 # by default prints the script name ($0)
 log_prefix() {
-  echo "$0"
+  echo "[$(date_iso8601)][$0]"
 }
 
 # default priority
@@ -41,21 +41,41 @@ log_tag() {
 
 log_debug() {
   log_priority 7 || return 0
-  echoerr "$(log_prefix)" "$(log_tag 7)" "$@"
+  echoerr "$(log_prefix)[$(log_tag 7)]" "$@"
 }
 
 log_info() {
   log_priority 6 || return 0
-  echoerr "$(log_prefix)" "$(log_tag 6)" "$@"
+  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
+}
+
+log_notice() {
+  log_priority 5 || return 0
+  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
+}
+
+log_warning() {
+  log_priority 4 || return 0
+  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
 }
 
 log_err() {
   log_priority 3 || return 0
-  echoerr "$(log_prefix)" "$(log_tag 3)" "$@"
+  echoerr "$(log_prefix)[$(log_tag 3)]" "$@"
 }
 
 # log_crit is for platform problems
 log_crit() {
   log_priority 2 || return 0
-  echoerr "$(log_prefix)" "$(log_tag 2)" "$@"
+  echoerr "$(log_prefix)[$(log_tag 2)]" "$@"
+}
+
+log_alert() {
+  log_priority 1 || return 0
+  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
+}
+
+log_emerg() {
+  log_priority 0 || return 0
+  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
 }
