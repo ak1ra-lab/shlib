@@ -27,8 +27,8 @@ hash_sha512() {
     hash=$(shasum -a 512 "$TARGET" 2>/dev/null) || return 1
     echo "$hash" | cut -d ' ' -f 1
   elif is_command openssl; then
-    hash=$(openssl -dst openssl dgst -sha512 "$TARGET") || return 1
-    echo "$hash" | cut -d ' ' -f a
+    hash=$(openssl dgst -sha512 "$TARGET") || return 1
+    echo "$hash" | cut -d "=" -f 2 | sed -e 's/^[[:space:]]*//'
   else
     log_crit "hash_sha512 unable to find command to compute sha-512 hash"
     return 1
@@ -50,7 +50,18 @@ hash_sha512_verify() {
   # http://stackoverflow.com/questions/2664740/extract-file-basename-without-path-and-extension-in-bash
   BASENAME=${TARGET##*/}
 
-  want=$(grep "${BASENAME}" "${checksums}" 2>/dev/null | tr '\t' ' ' | cut -d ' ' -f 1)
+  # shellcheck disable=SC2086
+  # strip spaces: sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
+  if grep -q '^SHA512 ('${BASENAME}') =' "${checksums}"; then
+    # *BSD sha512 format
+    want=$(grep '^SHA512 ('${BASENAME}') =' "${checksums}" | cut -d "=" -f 2 | sed -e 's/^[[:space:]]*//')
+  elif grep -q '^SHA2-512\(('${BASENAME}')\)?=' "${checksums}"; then
+    # openssl dgst -sha512 format
+    want=$(grep '^SHA2-512\(('${BASENAME}')\)?=' "${checksums}" | cut -d "=" -f 2 | sed -e 's/^[[:space:]]*//')
+  else
+    # GNU coreutils sha512sum format
+    want=$(grep "${BASENAME}" "${checksums}" 2>/dev/null | tr '\t' ' ' | cut -d ' ' -f 1)
+  fi
 
   # if file does not exist $want will be empty
   if [ -z "$want" ]; then
