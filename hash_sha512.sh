@@ -60,7 +60,7 @@ hash_sha512_verify() {
     want=$(grep '^SHA2-512\(('${BASENAME}')\)?=' "${checksums}" | cut -d "=" -f 2 | sed -e 's/^[[:space:]]*//')
   else
     # GNU coreutils sha512sum format
-    want=$(grep "${BASENAME}" "${checksums}" 2>/dev/null | tr '\t' ' ' | cut -d ' ' -f 1)
+    want=$(grep "${BASENAME}$" "${checksums}" 2>/dev/null | tr '\t' ' ' | cut -d ' ' -f 1)
   fi
 
   # if file does not exist $want will be empty
