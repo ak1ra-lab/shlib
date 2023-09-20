@@ -1,6 +1,7 @@
 . ./assert.sh
 . ./is_command.sh
 . ./echoerr.sh
+. ./date_iso8601.sh
 . ./log.sh
 . ./hash_md5.sh
 
