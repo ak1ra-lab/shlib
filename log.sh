@@ -51,12 +51,12 @@ log_info() {
 
 log_notice() {
   log_priority 5 || return 0
-  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
+  echoerr "$(log_prefix)[$(log_tag 5)]" "$@"
 }
 
 log_warning() {
   log_priority 4 || return 0
-  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
+  echoerr "$(log_prefix)[$(log_tag 4)]" "$@"
 }
 
 log_err() {
@@ -72,10 +72,10 @@ log_crit() {
 
 log_alert() {
   log_priority 1 || return 0
-  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
+  echoerr "$(log_prefix)[$(log_tag 1)]" "$@"
 }
 
 log_emerg() {
   log_priority 0 || return 0
-  echoerr "$(log_prefix)[$(log_tag 6)]" "$@"
+  echoerr "$(log_prefix)[$(log_tag 0)]" "$@"
 }
