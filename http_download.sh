@@ -29,6 +29,22 @@ http_download_wget() {
     wget -q --header "$header" -O "$local_file" "$source_url"
   fi
 }
+
+# http_download_aria2
+#
+# unable to get server response code in a portable manner
+#
+http_download_aria2() {
+  local_file=$1
+  source_url=$2
+  header=$3
+  local_file_dir=${local_file%/*}
+  if [ -z "$header" ]; then
+    aria2c -q -d "$local_file_dir" "$source_url"
+  else
+    aria2c -q --header "$header" -d "$local_file_dir" "$source_url"
+  fi
+}
 #
 # http_download [local-file] [url] [optional extra header]
 #
@@ -42,6 +58,9 @@ http_download() {
     return
   elif is_command wget; then
     http_download_wget "$@"
+    return
+  elif is_command aria2c; then
+    http_download_aria2 "$@"
     return
   fi
   log_crit "http_download unable to find wget or curl"
