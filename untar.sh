@@ -7,14 +7,14 @@
 # (cd /foo && untar mytarball.gz)
 #
 untar() {
-  tarball=$1
-  case "${tarball}" in
-    *.tar.gz | *.tgz) tar -xzf "${tarball}" ;;
-    *.tar) tar -xf "${tarball}" ;;
-    *.zip) unzip "${tarball}" ;;
-    *)
-      log_err "untar unknown archive format for ${tarball}"
-      return 1
-      ;;
-  esac
+    tarball=$1
+    case "${tarball}" in
+        *.tar.gz | *.tgz) tar -xzf "${tarball}" ;;
+        *.tar) tar -xf "${tarball}" ;;
+        *.zip) unzip "${tarball}" ;;
+        *)
+            log_err "untar unknown archive format for ${tarball}"
+            return 1
+            ;;
+    esac
 }

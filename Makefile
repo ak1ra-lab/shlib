@@ -6,7 +6,7 @@ lint: ./bin/shfmt ## run shellcheck and other lints
 	./scripts/lint.sh
 
 fmt: ./bin/shfmt  ## reformat shell scripts
-	./bin/shfmt -ci -p -i 2 -w *.sh
+	./bin/shfmt -ci -p -i 4 -w *.sh
 
 clean:  ## clean up
 	rm -rf ./bin
