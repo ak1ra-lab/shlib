@@ -1,16 +1,20 @@
 
 test: ## run tests
 	err=0; for t in *_test.sh; do /bin/sh $$t; e=$$?; if [ $$e -ne 0 ]; then echo "^ $$t"; err=$$e; fi; done; exit $$err
+.PHONY: test
 
 lint: ./bin/shfmt ## run shellcheck and other lints
 	./scripts/lint.sh
+.PHONY: lint
 
 fmt: ./bin/shfmt  ## reformat shell scripts
 	./bin/shfmt -ci -p -i 2 -w *.sh
+.PHONY: fmt
 
 clean:  ## clean up
 	rm -rf ./bin
 	git gc --aggressive
+.PHONY: clean
 
 ./bin/shfmt: ./scripts/godownloader-shfmt.sh
 	./scripts/godownloader-shfmt.sh
@@ -21,12 +25,13 @@ help:
 	printf "\033[36m%-30s\033[0m %s\n", $$1, $$NF \
 	}' $(MAKEFILE_LIST)
 .DEFAULT_GOAL=help
-.PHONY=help
+.PHONY: help
 
-shlib:
+build:  ## join all scripts to stdout
 	@cat \
 		license.sh \
 		$$(ls *.sh | grep -vE 'assert\.sh|license(_end)?\.sh|_test\.sh' | sort) \
 		license_end.sh | \
-		grep -v '^#' | grep -v ' #' | tr -s '\n'
-.PHONY=shlib
+		grep -v '^#' | grep -v ' #' | tr -s '\n' | \
+		./bin/shfmt -ci -p -i 4
+.PHONY: build
